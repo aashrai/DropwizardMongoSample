@@ -1,10 +1,13 @@
 package com.aashrai.api;
 
-import org.bson.types.ObjectId;
+import lombok.Data;
+import org.jongo.marshall.jackson.oid.MongoObjectId;
 
+@Data
 public class Account {
 
-    private ObjectId _id;
+    @MongoObjectId
+    private String _id;
     private String name;
     private String address;
     private String email;
