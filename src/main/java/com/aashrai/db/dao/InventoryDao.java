@@ -12,13 +12,21 @@ public class InventoryDao {
         this.inventories = inventories;
     }
 
-    public Inventory getInventory(ObjectId inventoryId) {
+    private Inventory getInventory(ObjectId inventoryId) {
         return inventories.findOne(inventoryId).as(Inventory.class);
     }
 
-    public Boolean decrementStock(ObjectId inventoryId) {
+    public Inventory getInventory(String inventoryId) {
+        return getInventory(new ObjectId(inventoryId));
+    }
+
+    private Boolean decrementStock(ObjectId inventoryId) {
         return inventories.update("{ _id:#, stock:{ $gt: 0 }}", inventoryId)
                 .with("{ $inc: { stock: -1 }}")
                 .getN() > 0;
+    }
+
+    public Boolean decrementStock(String inventoryId) {
+        return decrementStock(new ObjectId(inventoryId));
     }
 }

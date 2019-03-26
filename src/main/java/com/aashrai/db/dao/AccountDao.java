@@ -12,7 +12,11 @@ public class AccountDao {
         this.accounts = accounts;
     }
 
-    public Account getAccount(ObjectId accountId) {
+    private Account getAccount(ObjectId accountId) {
         return accounts.findOne(accountId).as(Account.class);
+    }
+
+    public Account getAccount(String accountId) {
+        return getAccount(new ObjectId(accountId));
     }
 }
