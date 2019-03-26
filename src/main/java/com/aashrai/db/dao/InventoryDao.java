@@ -32,4 +32,9 @@ public class InventoryDao {
     public Boolean decrementStock(String inventoryId) {
         return decrementStock(new ObjectId(inventoryId));
     }
+
+    public void incrementStock(String inventoryId) {
+        inventories.update("{ _id:# }", inventoryId)
+                .with("{ $inc: { stock: 1 }}");
+    }
 }

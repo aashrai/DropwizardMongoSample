@@ -10,12 +10,14 @@ import com.aashrai.db.dao.InventoryDao;
 import com.aashrai.db.dao.OrderDao;
 import com.aashrai.db.dao.OrderInfoDao;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.text.SimpleDateFormat;
 
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 
+@Slf4j
 @AllArgsConstructor
 public class OrderClient {
 
@@ -25,6 +27,20 @@ public class OrderClient {
     private final OrderInfoDao orderInfoDao;
 
     public OrderInfo createOrder(Order order) {
+        validateOrder(order);
+
+        //Order creation with a rollback to restore the stock count in case of failure
+        try {
+            orderDao.createOrder(order);
+            return orderInfoDao.createOrderInfo(mapToOrderInfo(order));
+        } catch (Exception e) {
+            log.error("Order placement error", e);
+            inventoryDao.incrementStock(order.getPid());
+            throw e;
+        }
+    }
+
+    private void validateOrder(Order order) {
         Account account = accountDao.getAccount(order.getAccountId());
         if (account == null) {
             throw new OrderException(NOT_FOUND, String.format("Account: %s not found", order.getAccountId()));
@@ -39,9 +55,6 @@ public class OrderClient {
         if (!stockDecrement) {
             throw new OrderException(BAD_REQUEST, String.format("Inventory: %s does not have enough stock", inventory.get_id()));
         }
-
-        orderDao.createOrder(order);
-        return orderInfoDao.createOrderInfo(mapToOrderInfo(order));
     }
 
     private OrderInfo mapToOrderInfo(Order order) {
