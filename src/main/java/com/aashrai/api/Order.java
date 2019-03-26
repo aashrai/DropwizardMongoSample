@@ -1,13 +1,9 @@
 package com.aashrai.api;
 
-import org.jongo.marshall.jackson.oid.MongoObjectId;
+import org.bson.types.ObjectId;
 
 public class Order {
-
-    @MongoObjectId
-    private String id;
-    @MongoObjectId
-    private String pid;
-    @MongoObjectId
-    private String accountId;
+    private ObjectId _id;
+    private ObjectId pid;
+    private ObjectId accountId;
 }

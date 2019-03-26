@@ -1,11 +1,10 @@
 package com.aashrai.api;
 
-import org.jongo.marshall.jackson.oid.MongoObjectId;
+import org.bson.types.ObjectId;
 
 public class Account {
 
-    @MongoObjectId
-    private String id;
+    private ObjectId _id;
     private String name;
     private String address;
     private String email;
