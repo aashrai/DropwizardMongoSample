@@ -1,0 +1,22 @@
+server:
+  maxThreads: 512
+  applicationConnectors:
+    - type: http
+      port: 8080
+  adminConnectors:
+    - type: http
+      port: 8081
+
+logging:
+  level: INFO
+  loggers:
+    com.aashrai: DEBUG
+
+mongo:
+  seeds:
+    - host: localhost
+      port: 27017
+  database: ecomm
+  credentials:
+    userName: user
+    password: password
