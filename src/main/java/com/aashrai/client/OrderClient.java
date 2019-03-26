@@ -3,10 +3,13 @@ package com.aashrai.client;
 import com.aashrai.api.Account;
 import com.aashrai.api.Inventory;
 import com.aashrai.api.Order;
+import com.aashrai.api.OrderInfo;
 import com.aashrai.core.OrderException;
 import com.aashrai.db.dao.AccountDao;
 import com.aashrai.db.dao.InventoryDao;
 import com.aashrai.db.dao.OrderDao;
+
+import java.text.SimpleDateFormat;
 
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
@@ -25,7 +28,7 @@ public class OrderClient {
         this.inventoryDao = inventoryDao;
     }
 
-    public Order createOrder(Order order) {
+    public OrderInfo createOrder(Order order) {
         Account account = accountDao.getAccount(order.getAccountId());
         if (account == null) {
             throw new OrderException(NOT_FOUND, String.format("Account: %s not found", order.getAccountId()));
@@ -41,6 +44,19 @@ public class OrderClient {
             throw new OrderException(BAD_REQUEST, String.format("Inventory: %s does not have enough stock", inventory.get_id()));
         }
 
-        return orderDao.createOrder(order);
+        return mapToOrderInfo(orderDao.createOrder(order));
+    }
+
+    private OrderInfo mapToOrderInfo(Order order) {
+        Inventory inventory = inventoryDao.getInventory(order.getPid());
+        Account account = accountDao.getAccount(order.getAccountId());
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        return OrderInfo.builder()
+                .orderId(order.get_id())
+                .userName(account.getName())
+                .productName(inventory.getName())
+                .orderPlacedOn(format.format(order.getDate()))
+                .build();
     }
 }

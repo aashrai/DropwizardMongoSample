@@ -1,6 +1,7 @@
 package com.aashrai.resources;
 
 import com.aashrai.api.Order;
+import com.aashrai.api.OrderInfo;
 import com.aashrai.client.OrderClient;
 import lombok.AllArgsConstructor;
 
@@ -19,7 +20,7 @@ public class OrderRes {
     private final OrderClient orderClient;
 
     @POST
-    public Order createOrder(Order order) {
+    public OrderInfo createOrder(Order order) {
         return orderClient.createOrder(order);
     }
 

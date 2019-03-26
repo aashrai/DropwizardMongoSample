@@ -3,6 +3,8 @@ package com.aashrai.api;
 import lombok.Data;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 
+import java.util.Date;
+
 @Data
 public class Order {
 
@@ -12,4 +14,5 @@ public class Order {
     private String pid;
     @MongoObjectId
     private String accountId;
+    private Date date;
 }
