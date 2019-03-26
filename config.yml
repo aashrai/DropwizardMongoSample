@@ -12,11 +12,11 @@ logging:
   loggers:
     com.aashrai: DEBUG
 
-mongo:
+mongoDBConfiguration:
   seeds:
     - host: localhost
       port: 27017
   database: ecomm
   credentials:
-    userName: user
+    userName: username
     password: password
