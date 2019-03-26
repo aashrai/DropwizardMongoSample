@@ -1,16 +1,14 @@
 package com.aashrai.db.dao;
 
 import com.aashrai.api.Inventory;
+import lombok.AllArgsConstructor;
 import org.bson.types.ObjectId;
 import org.jongo.MongoCollection;
 
+@AllArgsConstructor
 public class InventoryDao {
 
     private final MongoCollection inventories;
-
-    public InventoryDao(MongoCollection inventories) {
-        this.inventories = inventories;
-    }
 
     private Inventory getInventory(ObjectId inventoryId) {
         return inventories.findOne(inventoryId).as(Inventory.class);
