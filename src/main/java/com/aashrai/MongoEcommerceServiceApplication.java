@@ -5,6 +5,7 @@ import com.aashrai.core.OrderExceptionMapper;
 import com.aashrai.db.dao.AccountDao;
 import com.aashrai.db.dao.InventoryDao;
 import com.aashrai.db.dao.OrderDao;
+import com.aashrai.db.dao.OrderInfoDao;
 import com.aashrai.resources.OrderRes;
 import com.meltmedia.dropwizard.mongo.MongoBundle;
 import io.dropwizard.Application;
@@ -42,7 +43,8 @@ public class MongoEcommerceServiceApplication extends Application<MongoEcommerce
         InventoryDao inventoryDao = new InventoryDao(jongo.getCollection("inventories"));
         AccountDao accountDao = new AccountDao(jongo.getCollection("accounts"));
         OrderDao orderDao = new OrderDao(jongo.getCollection("orders"));
-        OrderClient orderClient = new OrderClient(orderDao, accountDao, inventoryDao);
+        OrderInfoDao orderInfoDao = new OrderInfoDao(jongo.getCollection("orderInfos"));
+        OrderClient orderClient = new OrderClient(orderDao, accountDao, inventoryDao, orderInfoDao);
         environment.jersey().register(new OrderRes(orderClient));
     }
 }

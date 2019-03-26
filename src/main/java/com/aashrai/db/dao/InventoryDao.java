@@ -18,6 +18,11 @@ public class InventoryDao {
         return getInventory(new ObjectId(inventoryId));
     }
 
+    /**
+     * "Write then read" approach for solving race condition in decrementing stock by two parallel API calls,
+     * Stock is only decremented if the current stock count is greater than zero, the client can throw an error
+     * if decrement stock is a NO-OP
+     */
     private Boolean decrementStock(ObjectId inventoryId) {
         return inventories.update("{ _id:#, stock:{ $gt: 0 }}", inventoryId)
                 .with("{ $inc: { stock: -1 }}")

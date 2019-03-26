@@ -5,7 +5,6 @@ import org.jongo.marshall.jackson.oid.MongoObjectId;
 
 @Data
 public class Account {
-
     @MongoObjectId
     private String _id;
     private String name;

@@ -8,25 +8,21 @@ import com.aashrai.core.OrderException;
 import com.aashrai.db.dao.AccountDao;
 import com.aashrai.db.dao.InventoryDao;
 import com.aashrai.db.dao.OrderDao;
+import com.aashrai.db.dao.OrderInfoDao;
+import lombok.AllArgsConstructor;
 
 import java.text.SimpleDateFormat;
 
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 
+@AllArgsConstructor
 public class OrderClient {
 
     private final OrderDao orderDao;
     private final AccountDao accountDao;
     private final InventoryDao inventoryDao;
-
-    public OrderClient(OrderDao orderDao,
-                       AccountDao accountDao,
-                       InventoryDao inventoryDao) {
-        this.orderDao = orderDao;
-        this.accountDao = accountDao;
-        this.inventoryDao = inventoryDao;
-    }
+    private final OrderInfoDao orderInfoDao;
 
     public OrderInfo createOrder(Order order) {
         Account account = accountDao.getAccount(order.getAccountId());
@@ -44,7 +40,8 @@ public class OrderClient {
             throw new OrderException(BAD_REQUEST, String.format("Inventory: %s does not have enough stock", inventory.get_id()));
         }
 
-        return mapToOrderInfo(orderDao.createOrder(order));
+        orderDao.createOrder(order);
+        return orderInfoDao.createOrderInfo(mapToOrderInfo(order));
     }
 
     private OrderInfo mapToOrderInfo(Order order) {
@@ -56,6 +53,8 @@ public class OrderClient {
                 .orderId(order.get_id())
                 .userName(account.getName())
                 .productName(inventory.getName())
+                .address(account.getAddress())
+                .paidPrice(inventory.getCost())
                 .orderPlacedOn(format.format(order.getDate()))
                 .build();
     }
