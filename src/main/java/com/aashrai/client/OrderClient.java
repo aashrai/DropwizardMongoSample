@@ -26,7 +26,6 @@ public class OrderClient {
     private final InventoryDao inventoryDao;
     private final OrderInfoDao orderInfoDao;
 
-    //TODO add a shell script for Mongo DB data setup˚
     //TODO write Readme
 
     public OrderInfo createOrder(Order order) {
