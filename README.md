@@ -13,6 +13,7 @@ Since updates to a document in MongoDB is atomic parallel decrements to stock is
 
 ## Prerequisites
 1. Java 1.8 installed
+1. Maven installed
 2. MongoDB installed and running locally at port **27017**
 
 ## Running The Application
