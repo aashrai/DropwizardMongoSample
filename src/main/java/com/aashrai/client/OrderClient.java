@@ -26,6 +26,9 @@ public class OrderClient {
     private final InventoryDao inventoryDao;
     private final OrderInfoDao orderInfoDao;
 
+    //TODO add a shell script for Mongo DB data setup˚
+    //TODO write Readme
+
     public OrderInfo createOrder(Order order) {
         validateOrder(order);
 
@@ -67,8 +70,16 @@ public class OrderClient {
                 .userName(account.getName())
                 .productName(inventory.getName())
                 .address(account.getAddress())
-                .paidPrice(inventory.getCost())
+                .offerPrice(inventory.getCost())
+                .paidPrice(getPaidPrice(order, inventory))
                 .orderPlacedOn(format.format(order.getDate()))
                 .build();
+    }
+
+    private int getPaidPrice(Order order, Inventory inventory) {
+        if (order.getDiscount() == null) {
+            return inventory.getCost();
+        }
+        return (int) (inventory.getCost() - order.getDiscount() * inventory.getCost());
     }
 }

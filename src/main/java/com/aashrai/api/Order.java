@@ -23,4 +23,5 @@ public class Order {
     @NotNull
     private String accountId;
     private Date date;
+    private Float discount;
 }

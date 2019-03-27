@@ -23,4 +23,5 @@ public class OrderInfo {
     private String productName;
     private String orderPlacedOn;
     private Integer paidPrice;
+    private Integer offerPrice;
 }
