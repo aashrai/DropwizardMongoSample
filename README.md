@@ -1,13 +1,25 @@
-# MongoEcommerceService
+# Mongo E-commerce Application
 
-How to start the MongoEcommerceService application
----
+## Stack Used
+1. Dropwizard
+2. Jongo
+3. Dropwizard-Mongo bundle
+4. Lombok
 
-1. Run `mvn clean install` to build your application
-1. Start application with `java -jar target/mongo-ecom-1.0.0-SNAPSHOT.jar server config.yml`
-1. To check that your application is running enter url `http://localhost:8080`
+## Handling race conditions
+I have used a **"Write Then Read"** approach for handling race conditions, the idea is to decrement the stock of an inventory first only if its current stock count is greater than zero. Then the number of modified documents is checked to verify if the stock actually got decremented, if no document got updated an exception is thrown.
 
-Health Check
----
+Since updates to a document in MongoDB is atomic parallel decrements to stock is handled safely.
 
-To see your applications health enter url `http://localhost:8081/healthcheck`
+## Prerequisites
+1. Java 1.8 installed
+2. MongoDB installed and running locally at port **27017**
+
+## Running The Application
+```sh setup.sh```
+
+1. Adds some mock data to the inventories and accounts collections
+2. Installs dependencies
+3. Builds the JAR and runs the application at **8080**
+
+**NOTE:** The API is located in ```OrderRes.java``` and can be the entrypoint for exploring the codebase.

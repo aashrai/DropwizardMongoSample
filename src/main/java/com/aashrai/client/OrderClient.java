@@ -26,8 +26,6 @@ public class OrderClient {
     private final InventoryDao inventoryDao;
     private final OrderInfoDao orderInfoDao;
 
-    //TODO write Readme
-
     public OrderInfo createOrder(Order order) {
         validateOrder(order);
 
