@@ -5,6 +5,7 @@ import com.aashrai.api.OrderInfo;
 import com.aashrai.client.OrderClient;
 import lombok.AllArgsConstructor;
 
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -20,7 +21,7 @@ public class OrderRes {
     private final OrderClient orderClient;
 
     @POST
-    public OrderInfo createOrder(Order order) {
+    public OrderInfo createOrder(@Valid Order order) {
         return orderClient.createOrder(order);
     }
 
